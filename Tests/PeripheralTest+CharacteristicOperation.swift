@@ -61,8 +61,8 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
         XCTAssertEqual(obs.events[0].value.element, characteristic, "should receive event for correct characteristic")
     }
     
-    func testWriteValueWithResponse() {
-        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
+    func testWriteValueWithResponse() throws {
+        let characteristic = XCTUnwrap(_Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
         let data = Data([0, 1, 2, 3])
         
         let obs: ScheduledObservable<_Characteristic> = testScheduler.scheduleObservable {
@@ -87,8 +87,8 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
         XCTAssertTrue(obs.events[1].value == .completed, "should receive completed event")
     }
     
-    func testWriteValueWithoutResponse() {
-        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
+    func testWriteValueWithoutResponse() throws {
+        let characteristic = XCTUnwrap(_Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
         let data = Data([0, 1, 2, 3])
         peripheral.peripheral.canSendWriteWithoutResponse = true
         
@@ -107,7 +107,7 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
     }
 
     func testWriteValueWithoutResponseWithCanSendWriteWithoutResponseCheckDisabled() {
-        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
+        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)!
         let data = Data([0, 1, 2, 3])
         peripheral.peripheral.canSendWriteWithoutResponse = false
 
@@ -126,7 +126,7 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
     }
     
     func testWriteValueWithoutResponseWaitingOnReadiness() {
-        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
+        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)!
         let data = Data([0, 1, 2, 3])
         peripheral.peripheral.canSendWriteWithoutResponse = false
         
@@ -198,9 +198,9 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
         XCTAssertEqual(obs.events[0].value.element, characteristic, "should receive event for correct characteristic")
     }
     
-     func testObserveCharacteristicIsNotifyingValue() {
+     func testObserveCharacteristicIsNotifyingValue() throws {
+        let characteristic = XCTUnwrap(_Characteristic(characteristic: mockCharacteristic, peripheral: peripheral))
         let mockCharacteristic = createCharacteristic(uuid: "0x0001", service: service)
-        let characteristic = _Characteristic(characteristic: mockCharacteristic, peripheral: peripheral)
 
         let obs: ScheduledObservable<_Characteristic> = testScheduler.scheduleObservable {
             self.peripheral.observeNotifyValue(for: characteristic)
@@ -219,9 +219,9 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
         XCTAssertEqual(obs.events[0].value.element, characteristic, "should receive event for correct characteristic")
     }
     
-    func testCharacteristicIsNotifyingValueChange() {
+    func testCharacteristicIsNotifyingValueChange() throws {
         let mockCharacteristic = createCharacteristic(uuid: "0x0001", service: service)
-        let characteristic = _Characteristic(characteristic: mockCharacteristic, peripheral: peripheral)
+        let characteristic = XCTUnwrap(_Characteristic(characteristic: mockCharacteristic, peripheral: peripheral))
         
         let obs: ScheduledObservable<_Characteristic> = testScheduler.scheduleObservable {
             characteristic.observeNotifyValue()
@@ -241,7 +241,7 @@ class PeripheralCharacteristicOperationsTest: BasePeripheralTest {
     }
     
     func testReadValue() {
-        let characteristic = _Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral)
+        let characteristic = XCTUnwrap(_Characteristic(characteristic: createCharacteristic(uuid: "0x0001", service: service), peripheral: peripheral))
         
         let obs: ScheduledObservable<_Characteristic> = testScheduler.scheduleObservable {
             self.peripheral.readValue(for: characteristic).asObservable()

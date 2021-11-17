@@ -41,9 +41,10 @@ class _Characteristic {
         self.service = service
     }
 
-    convenience init(characteristic: CBCharacteristicMock, peripheral: _Peripheral) {
-        let service = _Service(peripheral: peripheral, service: characteristic.service)
-        self.init(characteristic: characteristic, service: service)
+    convenience init?(characteristic: CBCharacteristicMock, peripheral: _Peripheral) {
+        guard let _service = characteristic.service else { return nil };
+        let _service = _Service(peripheral: peripheral, service: _service);
+        self.init(characteristic: characteristic, service: service);
     }
 
     /// Function that triggers descriptors discovery for characteristic.

@@ -263,7 +263,7 @@ class CBPeripheralMock: CBPeerMock {
 
 }
 class CBDescriptorMock: CBAttributeMock {
-    var characteristic: CBCharacteristicMock!
+    var characteristic: CBCharacteristicMock?
     var value: Any?
     var logDescription: String!
 
@@ -283,7 +283,7 @@ class CBServiceMock: CBAttributeMock {
 
 }
 class CBCharacteristicMock: CBAttributeMock {
-    var service: CBServiceMock!
+    var service: CBServiceMock?
     var properties: CBCharacteristicProperties!
     var value: Data?
     var descriptors: [CBDescriptorMock]?
@@ -315,7 +315,7 @@ class CBPeerMock: NSObject {
 }
 class CBATTRequestMock: NSObject {
     var central: CBCentralMock!
-    var characteristic: CBCharacteristicMock!
+    var characteristic: CBCharacteristicMock?
     var offset: Int!
     var value: Data?
     var logDescription: String!
